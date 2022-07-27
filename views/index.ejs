@@ -1,0 +1,89 @@
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title><%= title %></title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="/stylesheets/normalize.css">
+  <link rel="stylesheet" href="/stylesheets/skeleton.css">
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <script>
+    function onInputChange(item){
+      // console.log(item.name)
+      fetch(`/change/${item.name}`,{
+        method:'POST',
+        headers:{
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          stock:item.value
+        })
+      })
+    }
+
+    function delItem(item){
+      fetch(`/delete/${item.name}`).then(()=>{
+        item.parentElement.parentElement.parentElement.removeChild(item.parentElement.parentElement)
+      })
+    }
+  </script>
+
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <div class="row">
+      <div class="one-half column" style="margin-top: 25%"><a href="/add"><button>Add</button></a>
+        <table class="u-full-width">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>category</th>
+              <th>stock</th>
+              <th>content</th>
+              <th>option</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% items.forEach(element => {%>
+            <tr>
+              <td><%= element.name %></td>
+              <td><%= element.category %></td>
+              <td><input name=<%= element.uuid %> value=<%= element.stock %> onChange="onInputChange(this)" /></td>
+              <td><%= element.content %></td>
+              <td><button name=<%= element.uuid %>  onclick="delItem(this)">Delete</button></td>
+            </tr>
+          <%}); %>
+        </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
+
