@@ -9,7 +9,7 @@ const shortid = require('shortid');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   datastore.find().then((value)=>{
-    res.render('index', { title: '小型家用ERP',items:value });
+    res.render('index', { title: 'homeERP',items:value });
   })
 });
 
@@ -103,7 +103,7 @@ router.post('/add',(req,res)=>{
 })
 
 router.get('/add',(req,res)=>{
-  res.render('add',{ title: '小型家用ERP' })
+  res.render('add',{ title: 'homoERP' })
 })
 
 router.get('/addItem',(req,res)=>{
