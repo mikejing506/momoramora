@@ -136,10 +136,16 @@ router.get('/export', (req, res) => {
     if (value.length > 0) {
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet('items');
+      worksheet.addRow([
+        'url',
+        'name',
+        'category',
+        'stock'
+      ])
       value.forEach((item, index, array) => {
         let rowIndex = index + 1;
         worksheet.addRow([
-          `${process.env.SERVER}${item.uuid}`,
+          `${process.env.SERVER}s/${item.uuid}`,
           item.name,
           item.category,
           item.stock
