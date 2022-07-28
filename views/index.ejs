@@ -39,6 +39,19 @@
       })
     }
 
+    function onContentChange(item){
+      // console.log(item.name)
+      fetch(`/change/${item.name}`,{
+        method:'POST',
+        headers:{
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          content:item.value
+        })
+      })
+    }
+
     function delItem(item){
       fetch(`/delete/${item.name}`).then(()=>{
         item.parentElement.parentElement.parentElement.removeChild(item.parentElement.parentElement)
@@ -71,8 +84,8 @@
             <tr>
               <td><%= element.name %></td>
               <td><%= element.category %></td>
-              <td><input name=<%= element.uuid %> value=<%= element.stock %> onChange="onInputChange(this)" /></td>
-              <td><%= element.content %></td>
+              <td><input name=<%= element.uuid %> value="<%= element.stock %>" onChange="onInputChange(this)" /></td>
+              <td><input name=<%= element.uuid %> value="<%= element.content %>" onChange="onContentChange(this)" /></td>
               <td><button name=<%= element.uuid %>  onclick="delItem(this)">Delete</button></td>
             </tr>
           <%}); %>

@@ -116,7 +116,7 @@ router.get('/addItem', (req, res) => {
     let newItem = { uuid: shortid.generate(), exported: false, ...req.query }
     // res.send(newItem)
     datastore.insert(newItem).then((value) => {
-      res.redirect('/')
+      res.redirect('/add')
     }).catch((reason) => {
       res.send({
         status: "failure",
@@ -144,14 +144,16 @@ router.get('/export', (req, res) => {
       ])
       value.forEach((item, index, array) => {
         let rowIndex = index + 1;
-        worksheet.addRow([
-          `${process.env.SERVER}s/${item.uuid}`,
-          item.name,
-          item.category,
-          item.stock
-        ])
+        for(i=0;i<item.stock;i++){
+          worksheet.addRow([
+            `${process.env.SERVER}s/${item.uuid}`,
+            item.name,
+            item.category,
+            item.stock
+          ])
+        }
       })
-      datastore.update({ exported: false }, { $set: { exported: true } })
+      datastore.update({ exported: false }, { $set: { exported: true } }, {multi:true})
       workbook.xlsx.writeBuffer().then((buffer) => {
         const fileName = "Items.xlsx"
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
